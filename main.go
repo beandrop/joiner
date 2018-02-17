@@ -22,9 +22,9 @@ IncomingEvents:
 		case msg := <-rtm.IncomingEvents:
 			switch ev := msg.Data.(type) {
 			case *slack.MessageEvent:
-				if ev.SubType == "channel_join" {
+				if ev.SubType == "channel_join" || ev.Type == "member_joined_channel" {
 					channel, ts, _ := api.DeleteMessage(ev.Channel, ev.Msg.Timestamp)
-					log.Println(channel, ts)
+					log.Println(channel, ts, ev.Msg.Text)
 				}
 			case *slack.RTMError:
 				log.Printf("Error: %s\n", ev.Error())
